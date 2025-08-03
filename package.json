@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "tauri dev",
 		"pack": "tauri build --no-bundle",
-		"pack linux": "tauri bundle"
+		"pack appimage": "tauri build --bundles appimage"
 	},
 	"devDependencies": {
 		"@tauri-apps/cli": "^2.6.2",
