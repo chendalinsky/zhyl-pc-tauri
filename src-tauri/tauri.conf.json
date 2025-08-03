@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "zhyl_tauri-rust",
+  "productName": "zhyl-tauri-rust",
   "version": "1.1.0",
-  "identifier": "com.zhyl_tauri-rust.app",
+  "identifier": "com.zhyl-tauri-rust.app",
   "build": {
     "frontendDist": "../src",
 	"devUrl": "https://mass.cqgelin.com/h5"
@@ -11,7 +11,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "zhyl_tauri-rust",
+        "title": "zhyl-tauri-rust",
         "width": 800,
         "height": 600
       }

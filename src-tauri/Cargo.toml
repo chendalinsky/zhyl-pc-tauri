@@ -1,7 +1,7 @@
 [package]
-name = "zhyl_tauri-rust"
+name = "zhyl-tauri-rust"
 version = "0.1.0"
-description = "zhyl_tauri-rust"
+description = "zhyl-tauri-rust"
 authors = ["you"]
 edition = "2021"
 
