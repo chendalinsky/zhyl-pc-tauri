@@ -1,7 +1,7 @@
 [package]
-name = "tauri-rust-2"
+name = "zhyl_tauri-rust"
 version = "0.1.0"
-description = "A Tauri App"
+description = "zhyl_tauri-rust"
 authors = ["you"]
 edition = "2021"
 

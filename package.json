@@ -1,5 +1,5 @@
 {
-	"name": "tauri-rust-2",
+	"name": "zhyl_tauri-rust",
 	"module": "index.ts",
 	"type": "module",
 	"private": true,
