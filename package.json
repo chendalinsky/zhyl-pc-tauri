@@ -1,0 +1,18 @@
+{
+	"name": "tauri-rust-2",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "tauri dev",
+		"pack": "tauri build --no-bundle",
+		"pack linux": "tauri bundle"
+	},
+	"devDependencies": {
+		"@tauri-apps/cli": "^2.6.2",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
