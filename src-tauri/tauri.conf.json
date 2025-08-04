@@ -32,7 +32,9 @@
     ],
     "linux": {
       "appimage": {
-          "linuxdeployPluginGTK": "~/.cache/tauri/linuxdeploy-plugin-gtk/linuxdeploy-plugin-gtk.sh"
+          "files": {
+              "linuxdeploy-plugin-gtk.sh":"~/.cache/tauri/linuxdeploy-plugin-gtk/linuxdeploy-plugin-gtk.sh"
+          }
       }
     }
   }
