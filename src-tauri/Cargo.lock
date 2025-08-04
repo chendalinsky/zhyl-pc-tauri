@@ -5152,7 +5152,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "zhyl_tauri-rust"
+name = "zhyl_tauri_rust"
 version = "0.1.0"
 dependencies = [
  "serde",
