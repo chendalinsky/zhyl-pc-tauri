@@ -4,7 +4,7 @@
 set -e
 
 # 1. 构建 Tauri 项目的 release 版本
-cargo tauri build --release
+cargo tauri build -- --release
 
 # 2. 定义路径（根据你的实际存放位置修改）
 LINUXDEPLOY="./plugin/linuxdeploy-aarch64.AppImage"
@@ -20,4 +20,5 @@ $LINUXDEPLOY \
   --executable $APP_BIN \
   --plugin $GTK_PLUGIN \
   --plugin $GSTREAMER_PLUGIN \
-  --output appimage
+  --output appimage。。
+  
