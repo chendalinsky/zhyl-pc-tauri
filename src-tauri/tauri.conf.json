@@ -29,13 +29,6 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ],
-    "linux": {
-      "appimage": {
-          "files": {
-              "linuxdeploy-plugin-gtk.sh":"~/.cache/tauri/linuxdeploy-plugin-gtk/linuxdeploy-plugin-gtk.sh"
-          }
-      }
-    }
+    ]
   }
 }

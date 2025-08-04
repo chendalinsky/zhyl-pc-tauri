@@ -12,7 +12,7 @@ GTK_PLUGIN="./plugin/linuxdeploy-plugin-gtk.sh"
 GSTREAMER_PLUGIN="./plugin/linuxdeploy-plugin-gstreamer.sh"
 
 # 3. 指定 Tauri 构建输出的可执行文件路径
-APP_BIN="./out/release/zhyl_v2.0"  # 替换为实际的可执行文件名
+APP_BIN="./out/release/zhyl-tauri-rust"  # 替换为实际的可执行文件名
 
 # 4. 调用 linuxdeploy 打包，指定插件路径
 $LINUXDEPLOY \

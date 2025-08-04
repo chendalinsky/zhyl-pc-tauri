@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "zhyl-tauri-rust",
+  "version": "1.1.0",
+  "identifier": "com.zhyl.tauri.rust",
+  "build": {
+    "frontendDist": "../src",
+	"devUrl": "https://mass.cqgelin.com/h5"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "zhyl-tauri-rust",
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "appimage"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
+      "appimage": {
+          "files": {
+              "linuxdeploy-plugin-gtk.sh":"~/.cache/tauri/linuxdeploy-plugin-gtk/linuxdeploy-plugin-gtk.sh"
+          }
+      }
+    }
+  }
+}
