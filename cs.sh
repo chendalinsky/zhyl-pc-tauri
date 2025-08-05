@@ -21,5 +21,5 @@ $LINUXDEPLOY \
   --executable $APP_BIN \
   --plugin $GTK_PLUGIN \
   --plugin $GSTREAMER_PLUGIN \
-  --output appimage。。
+  --output appimage
   
