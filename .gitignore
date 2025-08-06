@@ -29,3 +29,4 @@ dist-ssr
 /src-tauri/out/
 /output/
 /src-tauri/output/
+/.target/
