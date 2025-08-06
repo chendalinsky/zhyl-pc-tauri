@@ -1,5 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
 # 进入你的项目根目录
-cd /home/dalin/workspace/projects/zhyl-tauri
+cd /home/dalin/workspace/projects/zhyl-tauri || exit
+
+export CARGO_TARGET_DIR="$(pwd)/.target"
 
 # 设定环境变量并重新打包
 export LINUXDEPLOY=/home/dalin/workspace/projects/zhyl-tauri/plugin/linuxdeploy-aarch64.AppImage
