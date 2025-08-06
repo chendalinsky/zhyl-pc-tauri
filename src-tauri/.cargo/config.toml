@@ -10,4 +10,4 @@ index = "https://github.com/rust-lang/crates.io-index"
 
 # 把 target 目录统一放到项目根目录
 [build]
-target-dir = "../out"
+target-dir = "out"
