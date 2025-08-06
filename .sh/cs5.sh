@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 确保脚本在出错时停止
-set -e
+set -euo pipefail
 
 # 1. 构建 Tauri 项目的 release 版本
 # cargo tauri build -- --release
