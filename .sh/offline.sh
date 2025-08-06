@@ -18,4 +18,4 @@ export TAURI_SKIP_APPIMAGE_DOWNLOAD=1   # 1.6+ 版本已支持
 # export TAURI_APPIMAGE_DOWNLOAD=never
 
 # 开始打包
-cargo tauri build --bundles appimage
+exec cargo tauri build --bundles appimage
