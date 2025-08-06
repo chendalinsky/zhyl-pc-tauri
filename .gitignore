@@ -23,7 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
-/out/
-/src-tauri/out/
 /target/
 /src-tauri/target/
+/out/
+/src-tauri/out/
+/output/
+/src-tauri/output/
