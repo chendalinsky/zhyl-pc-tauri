@@ -1,8 +1,5 @@
 # 使用官方源
 [source.crates-io]
-replace-with = 'crates-io'
-
-[source.crates-io]
 registry = "https://github.com/rust-lang/crates.io-index"
 
 # 使用 TUNA 源作为备份
