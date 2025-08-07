@@ -27,7 +27,7 @@ jobs:
 
     steps:
       # 步骤1：拉取仓库代码
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4  # 同步升级到v4
 
       # 步骤2：缓存Rust构建产物（加速后续构建）
       - name: Cache rust build artifacts
@@ -40,18 +40,16 @@ jobs:
       - name: Build app on Arm runner
         uses: pguyot/arm-runner-action@v2.6.5
         with:
-          base_image: ${{ matrix.base_image }}  # 基于DietPi的Arm系统镜像
-          cpu: ${{ matrix.cpu }}               # 模拟的CPU型号
-          bind_mount_repository: true          # 将仓库挂载到模拟器中
-          image_additional_mb: 10240           # 扩展镜像存储空间（10GB）
+          base_image: ${{ matrix.base_image }}
+          cpu: ${{ matrix.cpu }}
+          bind_mount_repository: true
+          image_additional_mb: 10240
           optimize_image: no
           commands: |
-            # 修复Rust环境变量问题
             export HOME=/root
-            # 加速crates.io索引更新
             export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
             
-            # 安装系统依赖（Tauri运行和构建必需）
+            # 安装系统依赖
             apt-get update -y --allow-releaseinfo-change
             apt-get autoremove -y
             apt-get install -y --no-install-recommends \
@@ -63,23 +61,26 @@ jobs:
             curl https://sh.rustup.rs -sSf | sh -s -- -y
             . "$HOME/.cargo/env"
             
-            # 安装Node.js（用于前端构建）
+            # 安装Node.js
             curl -fsSL https://deb.nodesource.com/setup_lts.x | bash
             apt-get install -y nodejs
             
-            # 安装前端依赖（根据你的包管理器修改：npm/pnpm/yarn）
-            npm install  # 若使用yarn则改为：yarn install
+            # 安装前端依赖（根据实际情况修改）
+            npm install
             
-            # 构建Tauri应用（--verbose用于调试）
-            npm run tauri build -- --verbose  # 若使用yarn则改为：yarn tauri build -- --verbose
+            # 构建Tauri应用
+            npm run tauri build -- --verbose
 
-      # 步骤4：提取应用版本号（从tauri.conf.json中读取）
+      # 步骤4：提取应用版本号
       - name: Get app version
         run: echo "APP_VERSION=$(jq -r .version src-tauri/tauri.conf.json)" >> $GITHUB_ENV
 
-      # 步骤5：上传AppImage产物（替换appname为你的项目名称）
+      # 步骤5：上传AppImage产物（已升级到v4版本）
       - name: Upload AppImage bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # 关键更新：从v3升级到v4
         with:
           name: AppImage-${{ matrix.arch }}
           path: ${{ github.workspace }}/src-tauri/target/release/bundle/appimage/appname_${{ env.APP_VERSION }}_${{ matrix.appimage }}.AppImage
+          # v4版本新增的可选配置（提升上传性能）
+          compression-level: 6
+          overwrite: true
