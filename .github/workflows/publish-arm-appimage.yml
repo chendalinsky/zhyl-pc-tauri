@@ -29,39 +29,32 @@ jobs:
           workspaces: src-tauri
           cache-on-failure: true
 
-      # 关键修复1：升级arm-runner-action到最新版本（修复挂载逻辑）
+      # 关键修复：使用最新的可用版本（v2.7.0是当前确认存在的稳定版）
       - name: Build app on Arm runner
-        uses: pguyot/arm-runner-action@v2.7.1  # 升级到最新版本（修复已知的umount问题）
+        uses: pguyot/arm-runner-action@v2.7.0
         with:
           base_image: ${{ matrix.base_image }}
           cpu: ${{ matrix.cpu }}
           bind_mount_repository: true
-          # 关键修复2：指定明确的挂载点，避免路径识别问题
-          bind_mount_path: /github/workspace  # 使用GitHub默认工作目录作为挂载点
-          image_additional_mb: 15360  # 增加磁盘空间（15GB），避免构建中断
+          bind_mount_path: /github/workspace
+          image_additional_mb: 15360
           optimize_image: no
-          # 关键修复3：提前安装QEMU依赖，确保静态二进制文件可用
           setup: |
             apt-get update && apt-get install -y qemu-user-static
           commands: |
             export HOME=/root
             export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
             
-            # 安装系统依赖（确保webkit2gtk等正确安装）
             apt-get update -y --allow-releaseinfo-change
             apt-get install -y --no-install-recommends \
               libwebkit2gtk-4.1-dev build-essential libssl-dev \
               libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev \
               patchelf libfuse2 file nodejs
             
-            # 安装Rust
             curl https://sh.rustup.rs -sSf | sh -s -- -y
             . "$HOME/.cargo/env"
             
-            # 安装前端依赖（根据实际包管理器修改）
             npm install
-            
-            # 构建Tauri应用（增加日志详细度，便于调试）
             RUST_LOG=debug npm run tauri build -- --verbose
 
       - name: Get app version
