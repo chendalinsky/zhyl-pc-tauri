@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "zhyl-tauri-rust"
 authors = ["you"]
 edition = "2021"
-resolver = "2"  # 添加这一行
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

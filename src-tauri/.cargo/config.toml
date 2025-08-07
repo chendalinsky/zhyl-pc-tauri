@@ -1,12 +1,17 @@
+# 使用官方源
 [source.crates-io]
-replace-with = 'tuna'
+replace-with = 'crates-io'
 
+[source.crates-io]
+registry = "https://github.com/rust-lang/crates.io-index"
+
+# 使用 TUNA 源作为备份
 [source.tuna]
 registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
 
-# 添加这部分，允许访问官方源
-[registries.crates-io]
-index = "https://github.com/rust-lang/crates.io-index"
+# 允许访问官方源
+[registries]
+crates-io = { index = "https://github.com/rust-lang/crates.io-index" }
 
 # 把 target 目录统一放到项目根目录
 [build]
