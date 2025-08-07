@@ -1,4 +1,4 @@
-name: Publish Linux Arm builds
+name: Publish Linux Arm aarch64 builds
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        arch: [aarch64, armv7l]
+        arch: [aarch64]
         include:
           - arch: aarch64
             cpu: cortex-a72
@@ -19,12 +19,6 @@ jobs:
             deb: arm64
             rpm: aarch64
             appimage: aarch64
-          - arch: armv7l
-            cpu: cortex-a53
-            base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv7-Bookworm.img.xz
-            deb: armhfp
-            rpm: arm
-            appimage: armhf
 
     steps:
       - name: Checkout repository
