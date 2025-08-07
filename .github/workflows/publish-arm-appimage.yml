@@ -1,86 +1,75 @@
 name: 'Publish Linux Arm builds'
 on:
-  workflow_dispatch:  # 支持手动触发
+  workflow_dispatch:
   push:
-    branches:
-      - release       # 推送到release分支时自动触发
+    branches: [release]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # 基于x64的Ubuntu运行器，通过模拟器构建Arm
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        arch: [aarch64, armv7l]  # 支持两种Arm架构
+        arch: [aarch64, armv7l]
         include:
           - arch: aarch64
             cpu: cortex-a72
             base_image: https://dietpi.com/downloads/images/DietPi_RPi5-ARMv8-Bookworm.img.xz
-            deb: arm64
-            rpm: aarch64
             appimage: aarch64
           - arch: armv7l
             cpu: cortex-a53
-            deb: armhfp
-            rpm: arm
-            appimage: armhf
             base_image: https://dietpi.com/downloads/images/DietPi_RPi-ARMv7-Bookworm.img.xz
+            appimage: armhf
 
     steps:
-      # 步骤1：拉取仓库代码
-      - uses: actions/checkout@v4  # 同步升级到v4
+      - uses: actions/checkout@v4
 
-      # 步骤2：缓存Rust构建产物（加速后续构建）
       - name: Cache rust build artifacts
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: src-tauri
           cache-on-failure: true
 
-      # 步骤3：使用Arm模拟器构建应用
+      # 关键修复1：升级arm-runner-action到最新版本（修复挂载逻辑）
       - name: Build app on Arm runner
-        uses: pguyot/arm-runner-action@v2.6.5
+        uses: pguyot/arm-runner-action@v2.7.1  # 升级到最新版本（修复已知的umount问题）
         with:
           base_image: ${{ matrix.base_image }}
           cpu: ${{ matrix.cpu }}
           bind_mount_repository: true
-          image_additional_mb: 10240
+          # 关键修复2：指定明确的挂载点，避免路径识别问题
+          bind_mount_path: /github/workspace  # 使用GitHub默认工作目录作为挂载点
+          image_additional_mb: 15360  # 增加磁盘空间（15GB），避免构建中断
           optimize_image: no
+          # 关键修复3：提前安装QEMU依赖，确保静态二进制文件可用
+          setup: |
+            apt-get update && apt-get install -y qemu-user-static
           commands: |
             export HOME=/root
             export CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
             
-            # 安装系统依赖
+            # 安装系统依赖（确保webkit2gtk等正确安装）
             apt-get update -y --allow-releaseinfo-change
-            apt-get autoremove -y
             apt-get install -y --no-install-recommends \
-              curl libwebkit2gtk-4.1-dev build-essential libssl-dev \
+              libwebkit2gtk-4.1-dev build-essential libssl-dev \
               libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev \
-              patchelf libfuse2 file
+              patchelf libfuse2 file nodejs
             
             # 安装Rust
             curl https://sh.rustup.rs -sSf | sh -s -- -y
             . "$HOME/.cargo/env"
             
-            # 安装Node.js
-            curl -fsSL https://deb.nodesource.com/setup_lts.x | bash
-            apt-get install -y nodejs
-            
-            # 安装前端依赖（根据实际情况修改）
+            # 安装前端依赖（根据实际包管理器修改）
             npm install
             
-            # 构建Tauri应用
-            npm run tauri build -- --verbose
+            # 构建Tauri应用（增加日志详细度，便于调试）
+            RUST_LOG=debug npm run tauri build -- --verbose
 
-      # 步骤4：提取应用版本号
       - name: Get app version
         run: echo "APP_VERSION=$(jq -r .version src-tauri/tauri.conf.json)" >> $GITHUB_ENV
 
-      # 步骤5：上传AppImage产物（已升级到v4版本）
       - name: Upload AppImage bundle
-        uses: actions/upload-artifact@v4  # 关键更新：从v3升级到v4
+        uses: actions/upload-artifact@v4
         with:
           name: AppImage-${{ matrix.arch }}
-          path: ${{ github.workspace }}/src-tauri/target/release/bundle/appimage/appname_${{ env.APP_VERSION }}_${{ matrix.appimage }}.AppImage
-          # v4版本新增的可选配置（提升上传性能）
+          path: ${{ github.workspace }}/src-tauri/target/release/bundle/appimage/*_${{ env.APP_VERSION }}_${{ matrix.appimage }}.AppImage
           compression-level: 6
-          overwrite: true
